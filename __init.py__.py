@@ -1,45 +1,48 @@
-import mysql.connector
+import sqlite3
 
 from dream_team_db import init_db
-from dream_team_db import data
 
 usr = 'root'
 pas = 'root'
-host = '127.0.0.1'
-db_name = 'CarSharingDB'
-connector = None
+db_name = 'CarSharingDB.db'
+conn = None
 
-def create_database():
-    cr_connector = mysql.connector.connect(user=usr, password=pas, host=host)
-    init_db.create_db(connector=cr_connector, db_name=db_name)
-    cr_connector.close()
+
+# def create_database():
+#     cr_connector = sqlite3.connect(user=usr, password=pas)
+#     init_db.create_db(connector=cr_connector, db_name=db_name)
+#     cr_connector.close()
 
 def create_tables():
     __check_connector()
-    init_db.create_tables(connector=connector)
+    init_db.create_tables(connector=conn)
+
 
 def drop_database():
-    cr_connector = mysql.connector.connect(user=usr, password=pas, host=host)
-    init_db.drop_database(cr_connector, db_name=db_name)
+    cr_connector = sqlite3.connect(db_name)
+    init_db.drop_database(db_name=db_name)
     cr_connector.close()
 
+
 def close():
-    __check_connector()
-    connector.close()
+    if (conn != None):
+        conn.close()
+
 
 def __check_connector():
-    global connector
-    if (connector == None):
-        connector = mysql.connector.connect(user=usr, password=pas, host=host, database=db_name)
+    global conn
+    if (conn == None):
+        conn = sqlite3.connect(database=db_name)
 
 
-# drop_database()
+drop_database()
 # create_database()
 # create_tables()
 # __check_connector()
 # data.fill_all(connector.cursor())
 # connector.commit()
 
-data.test(connector.cursor())
-
+# data.test(conn.cursor())
+__check_connector()
+create_tables()
 close()
