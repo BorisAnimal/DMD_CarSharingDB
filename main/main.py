@@ -1,18 +1,9 @@
 import sqlite3
-from dream_team_db import data
+from db import init_db
 
-from dream_team_db import init_db
-
-usr = 'root'
-pas = 'root'
 db_name = 'CarSharingDB.db'
 conn = None
 
-
-# def create_database():
-#     cr_connector = sqlite3.connect(user=usr, password=pas)
-#     init_db.create_db(connector=cr_connector, db_name=db_name)
-#     cr_connector.close()
 
 def create_tables():
     __check_connector()
@@ -36,10 +27,11 @@ def __check_connector():
         conn = sqlite3.connect(database=db_name)
 
 
-drop_database()
-__check_connector()
-create_tables()
-data.fill_all(conn.cursor())
-conn.commit()
+def main():
+    drop_database()
+    __check_connector()
+    create_tables()
+    init_db.fill_all(conn.cursor())
+    conn.commit()
 
-close()
+    close()

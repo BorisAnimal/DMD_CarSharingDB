@@ -1,24 +1,53 @@
-import itertools
+import os
+from db import __data_provider as provider
 
+tables_file = "setup.sql"
 locations = None
 customers = None
 
 
-def generate_new_location(cursor):
+def create_db(connector, db_name):
+    cursor = connector.cursor()
+    cursor.execute("CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(db_name))
+
+
+def drop_database(db_name: str):
+    os.remove(db_name)
+
+
+def create_tables(connector):
+    cursor = connector.cursor()
+    for i in __get_tables():
+        cursor.execute(i)
+        print(i)
+
+
+def __get_tables():
+    r = []
+    with open(tables_file) as f:
+        r = f.read().split("\n\n")
+    return r
+
+
+def fill_all(cursor):
+    __fill_charging_stations(cursor)
+    __fill_repair_stations(cursor)
+    cars = __fill_cars(cursor)
+    manager = __fill_employee(cursor)
+    __fill_car_parks(cursor)
+    __fill_customer_activity(cursor, cars, manager)
+
+    cursor.close()
+
+
+def __generate_new_location(cursor):
     global locations
     if (locations == None):
-        stt = ["Chuvashia", "Tatarstan", "Kalmikia", "Bashkiria"]
-        ct = ["Kazan", "Innopolis", "Cheboksary"]
-        str = ["Sportivnaya", "Baumana", "Lenina", "Gogolya"]
-        hs = ["19", "1", "15", "12", "10", "2"]
-        zp = ["420500", "452250", "124525", "151521", "422188"]
-        gpsx = ["10.210", "21.80", "17.21", "15.1561", "213.112"]
-        gpsy = ["10.210", "21.80", "17.21", "15.1561", "213.112"]
-        locations = list(itertools.product(stt, ct, str, hs, zp, gpsx, gpsy))
+        locations = provider.get_locations()
     if (len(locations) <= 0):
         locations = None
         print("\n\n\nWARNING!!!!HAVE NO MORE LOCATIONS!!! HARDCODE ANYMORE VALUES IN LISTS!!!!!!ACHTUNG!!!!\n\n\n")
-        generate_new_location(cursor)
+        __generate_new_location(cursor)
     else:
         cursor.execute("""INSERT INTO locations 
                                 (state, city, street, house, zip_code, gpsX, gpsY)
@@ -28,20 +57,16 @@ def generate_new_location(cursor):
             return i[0]
 
 
-def generate_new_customer(cursor):
+def __generate_new_customer(cursor):
     global customers
     if (customers == None):
-        nm = ["John", "Snowy", "Snoop"]
-        dt = ["29.01.1992", "30.01.2000", "31.01.1987", "01.02.1991", "02.02.2002"]
-        pn = ["5445555455", "646465465", "6465446464", "66651515", "46566515"]
-        fn = ["Lock Dogg", "Matt Daymon", "Kate Gogo", "Lina Tiger"]
-        customers = list(itertools.product(nm, dt, pn, fn))
+        cursor = provider.get_customers()
     if (len(customers) <= 0):
         customers = None
         print("\n\n\nWARNING!!!!HAVE NO MORE LOCATIONS!!! HARDCODE ANYMORE VALUES IN LISTS!!!!!!ACHTUNG!!!!\n\n\n")
-        generate_new_customer(cursor)
+        __generate_new_customer(cursor)
     else:
-        generate_new_location(cursor)
+        __generate_new_location(cursor)
         cursor.execute("""INSERT INTO customers 
                                     (name, date_of_birth, phone_number, full_name, lives_in)
                                       VALUES (?,?,?,?,LAST_INSERT_ROWID())""", customers.pop())
@@ -50,41 +75,34 @@ def generate_new_customer(cursor):
             return i[0]
 
 
-def fill_charging_stations(cursor):
+def __fill_charging_stations(cursor):
     max = 6
     for i in range(max):
-        generate_new_location(cursor)
+        __generate_new_location(cursor)
         cursor.execute("""insert into charging_stations (availible_sockets,max_availible_sockets, location) values
             (?,?,LAST_INSERT_ROWID())""", [str(i), str(max)])
 
 
-def fill_repair_stations(cursor):
+def __fill_repair_stations(cursor):
     max = 6
     for i in range(max):
-        generate_new_location(cursor)
+        __generate_new_location(cursor)
         cursor.execute("""insert into repair_stations (availible_sockets,max_availible_sockets,location) values
             (?,?,LAST_INSERT_ROWID())""", [str(i), str(max)])
 
 
-def fill_car_parks(cursor):
+def __fill_car_parks(cursor):
     for i in range(6):
-        generate_new_location(cursor)
+        __generate_new_location(cursor)
         cursor.execute("""insert into car_parks (availible_sockets, location) values
             (?,LAST_INSERT_ROWID())""", [str(i)])
 
 
-def fill_cars(cursor):
-    st = ["good", "bad"]
-    cl = [10, 90]
-    tf = [70, 80]
-    ml = ["Volvo", "lada"]
-    col = ["red", "green", "Brown"]
-    pl = ["e777kx", "h123bm"]
-    tp = list(itertools.product(st, cl, tf, ml, col, pl))
+def __fill_cars(cursor):
+    tp = provider.get_cars()
     car_ids = []
-    # (cursor, state, charge_level, tarif, model, destination, location)
     for i in tp:
-        generate_new_location(cursor)
+        __generate_new_location(cursor)
         cursor.execute("""INSERT INTO  cars
                             (state, charge_level, tarif, model, color,plate, location)
                               VALUES (?,?,?,?,?,?,LAST_INSERT_ROWID())""", i)
@@ -94,7 +112,7 @@ def fill_cars(cursor):
     return car_ids
 
 
-def fill_employee(cursor):
+def __fill_employee(cursor):
     cursor.execute("""INSERT INTO posts (post_name, salary) VALUES (?,?)""", ("manager", 1400))
     cursor.execute("select LAST_INSERT_ROWID()")
     man = -1
@@ -115,18 +133,15 @@ def fill_employee(cursor):
         return i[0]
 
 
-
-
-
-def fill_customer_activity(cursor, car_ids: list, manager):
+def __fill_customer_activity(cursor, car_ids: list, manager):
     # ORDER
     begin = "2017-11-24 00:00:00"
     end = "2017-11-24 00:10:00"
-    cust = generate_new_customer(cursor)
+    cust = __generate_new_customer(cursor)
     car_id = car_ids.pop()
-    cust = generate_new_customer(cursor)
-    start = generate_new_location(cursor)
-    finish = generate_new_location(cursor)
+    cust = __generate_new_customer(cursor)
+    start = __generate_new_location(cursor)
+    finish = __generate_new_location(cursor)
     cursor.execute(
         """insert into orders (start_time, end_time, made_by, included_car, start_location, destination) 
             VALUES (?,?,?,?,?,?)""", (start, end, cust, car_id, start, finish))
@@ -139,28 +154,3 @@ def fill_customer_activity(cursor, car_ids: list, manager):
                    ("All was good", 10, manager, cust))
     # Payments
     cursor.execute("""insert into payments (paid_for_order, paid_amount) VALUES (?,?)""", (ord, 120))
-
-def fill_all(cursor):
-    fill_charging_stations(cursor)
-    fill_repair_stations(cursor)
-    cars = fill_cars(cursor)
-    manager = fill_employee(cursor)
-    fill_car_parks(cursor)
-    fill_customer_activity(cursor, cars, manager)
-
-    cursor.close()
-
-
-    # car_parks
-    # cars
-    # charging_stations
-    # customers
-    # employees
-    # feedbacks
-    # orders
-    # payments
-    # history_of_travels
-    # locations
-
-    # posts
-    # repair_stations
