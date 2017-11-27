@@ -24,6 +24,7 @@ CREATE TABLE customers(
 CREATE TABLE employee(
 	SSN INTEGER,
 	full_name TINYTEXT,
+	salary INTEGER,
 	phone_number TINYTEXT,
 	post_id INTEGER,
 	PRIMARY KEY (SSN),
@@ -91,17 +92,16 @@ CREATE TABLE feedbacks(
 
 CREATE TABLE payments (
 	payment_id INTEGER,
-	paid_customer_id INTEGER,
+	paid_for_order INTEGER,
 	paid_amount INTEGER,
-    PRIMARY KEY (payment_id),
-	FOREIGN KEY (paid_customer_id) REFERENCES customers(customer_id) ON DELETE CASCADE
+  PRIMARY KEY (payment_id),
+	FOREIGN KEY (paid_for_order) REFERENCES orders(order_id) ON DELETE CASCADE
 );
 
 CREATE TABLE orders(
 	order_id INTEGER,
 	start_time DATETIME,
 	end_time DATETIME,
-	payment_id INTEGER,
 	made_by INTEGER,
 	included_car INTEGER,
 	start_location INTEGER,
@@ -109,7 +109,6 @@ CREATE TABLE orders(
 	PRIMARY KEY (order_id),
 	FOREIGN KEY (included_car) REFERENCES cars(car_id),
 	FOREIGN KEY (made_by) REFERENCES customers(customer_id),
-	FOREIGN KEY (payment_id) REFERENCES payments(payment_id),
 	FOREIGN KEY (start_location) REFERENCES locations(location_id),
 	FOREIGN KEY (destination) REFERENCES locations(location_id)
 );
@@ -120,4 +119,48 @@ CREATE TABLE history_of_travels(
 	time DATETIME,
 	FOREIGN KEY (car_id) REFERENCES cars(car_id),
 	FOREIGN KEY (location_id) REFERENCES locations(location_id)
-)
+);
+
+INSERT INTO locations VALUES (0, "default state", "default city", "default street", "default house", "start zip code", 0,0);
+
+INSERT INTO locations VALUES (1, "default state", "default city", "default street", "default house", "destination zip code", 1,1);
+
+INSERT INTO locations VALUES (2, "default state", "default city", "default street", "default house", "charge station zip code1", 2,2);
+
+INSERT INTO customers VALUES (0, "John", "19980-10-14 00:00:00", "89178516088", "John Abramovich", 0);
+
+INSERT INTO customers VALUES (1, "Marina", "19980-10-14 00:00:00", "89178516088", "Marina Abramovich", 0);
+
+INSERT INTO cars VALUES (0, "free", 100, 1, "BMW", "pink", 1, "DE8Y2A", 0);
+
+INSERT INTO cars VALUES (1, "free", 100, 1, "BMW", "red", 1, "AN8Y2A", 0);
+
+INSERT INTO cars VALUES (2, "free", 100, 1, "BMW", "red", 1, "AN1111", 0);
+
+INSERT INTO orders VALUES (0, "2017-11-14 12:00:00", "2017-11-14 15:00:00", 0, 0, 0, 1);
+
+INSERT INTO orders VALUES (1, "2017-11-14 12:00:00", "2017-11-14 15:00:00", 1, 1, 0, 1);
+
+INSERT INTO orders VALUES (2, "2017-12-14 12:00:00", "2017-12-14 15:00:00", 1, 2, 0, 1);
+
+INSERT INTO payments VALUES (0, 0, 100000000);
+
+INSERT INTO payments VALUES (1, 1, 100);
+
+INSERT INTO payments VALUES (2, 2, 100);
+
+INSERT INTO charging_stations VALUES (0, 5, 5, 2);
+
+INSERT INTO history_of_travels VALUES (0, 0, "2017-10-0 00:00:00");
+
+INSERT INTO history_of_travels VALUES (1, 0, "2017-10-0 00:00:00");
+
+INSERT INTO history_of_travels VALUES (2, 0, "2017-10-0 00:00:00");
+
+INSERT INTO history_of_travels VALUES (0, 1, "2017-11-14 15:00:00");
+
+INSERT INTO history_of_travels VALUES (1, 1, "2017-11-14 15:00:00");
+
+INSERT INTO history_of_travels VALUES (2, 1, "2017-12-14 15:00:00");
+
+INSERT INTO history_of_travels VALUES (2, 2, "2017-12-14 16:00:00");

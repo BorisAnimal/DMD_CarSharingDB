@@ -115,11 +115,7 @@ def fill_employee(cursor):
         return i[0]
 
 
-def generate_new_pay(cursor, cust):
-    cursor.execute("""insert into payments (paid_customer_id, paid_amount) VALUES (?,?)""", (cust, 120))
-    cursor.execute("select LAST_INSERT_ROWID()")
-    for i in cursor:
-        return i[0]
+
 
 
 def fill_customer_activity(cursor, car_ids: list, manager):
@@ -129,17 +125,20 @@ def fill_customer_activity(cursor, car_ids: list, manager):
     cust = generate_new_customer(cursor)
     car_id = car_ids.pop()
     cust = generate_new_customer(cursor)
-    # Payment
-    pay = generate_new_pay(cursor, cust)
     start = generate_new_location(cursor)
     finish = generate_new_location(cursor)
     cursor.execute(
-        """insert into orders (start_time, end_time, payment_id, made_by, included_car, start_location, destination) 
-            VALUES (?,?,?,?,?,?,?)""", (start, end, pay, cust, car_id, start, finish))
+        """insert into orders (start_time, end_time, made_by, included_car, start_location, destination) 
+            VALUES (?,?,?,?,?,?)""", (start, end, cust, car_id, start, finish))
+    ord = ''
+    cursor.execute("select LAST_INSERT_ROWID()")
+    for i in cursor:
+        ord = i[0]
     # Feedback
     cursor.execute("""insert into feedbacks (content, grade, managed_by, leaved_by) VALUES (?,?,?,?)""",
                    ("All was good", 10, manager, cust))
-
+    # Payments
+    cursor.execute("""insert into payments (paid_for_order, paid_amount) VALUES (?,?)""", (ord, 120))
 
 def fill_all(cursor):
     fill_charging_stations(cursor)
