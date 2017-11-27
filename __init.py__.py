@@ -1,4 +1,5 @@
 import sqlite3
+from dream_team_db import data
 
 from dream_team_db import init_db
 
@@ -36,13 +37,9 @@ def __check_connector():
 
 
 drop_database()
-# create_database()
-# create_tables()
-# __check_connector()
-# data.fill_all(connector.cursor())
-# connector.commit()
-
-# data.test(conn.cursor())
 __check_connector()
 create_tables()
+data.fill_all(conn.cursor())
+conn.commit()
+
 close()

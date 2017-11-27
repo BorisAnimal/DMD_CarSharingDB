@@ -21,10 +21,9 @@ CREATE TABLE customers(
 	FOREIGN KEY (lives_in) REFERENCES locations(location_id) ON DELETE SET NULL
 );
 
-CREATE TABLE employess(
+CREATE TABLE employee(
 	SSN INTEGER,
 	full_name TINYTEXT,
-	salary INTEGER,
 	phone_number TINYTEXT,
 	post_id INTEGER,
 	PRIMARY KEY (SSN),
