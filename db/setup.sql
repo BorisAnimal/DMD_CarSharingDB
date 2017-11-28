@@ -121,21 +121,20 @@ CREATE TABLE history_of_travels(
 	FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
 
-INSERT INTO locations VALUES (0, "default state", "default city", "default street", "default house", "start zip code", 0,0);
+INSERT INTO locations VALUES (0, "Republic of Moldova", "Iargara", "Stefan-Voda", "174/2", "6320", 46.4277,28.4294);
+INSERT INTO locations VALUES (1, "Russia", "Innopolis", "Universitetscaya", "1/4-207", "420500", 55.8304,49.0661);
+INSERT INTO locations VALUES (2, "Russia", "Moscow", "Lenin", "15/6", "105005", 55.7558,37.6173);
 
-INSERT INTO locations VALUES (1, "default state", "default city", "default street", "default house", "destination zip code", 1,1);
-
-INSERT INTO locations VALUES (2, "default state", "default city", "default street", "default house", "charge station zip code1", 2,2);
-
-INSERT INTO customers VALUES (0, "John", "19980-10-14 00:00:00", "89178516088", "John Abramovich", 0);
-
-INSERT INTO customers VALUES (1, "Marina", "19980-10-14 00:00:00", "89178516088", "Marina Abramovich", 0);
+INSERT INTO customers VALUES (0, "John", "1980-10-14 12:15:30", "89178516088", "John Abramovich", 2);
+INSERT INTO customers VALUES (1, "Marina", "1950-05-19 20:50:10", "89175516088", "Marina Abramovich", 2);
+INSERT INTO customers VALUES (2, "Constantin", "1995-06-24 10:55:18", "37369488834", "Constantin Condur", 0);
+INSERT INTO customers VALUES (3, "Robert", "2001-03-03 05:45:23", "37362169587", "Robert Popescu", 0);
+INSERT INTO customers VALUES (4, "Timur", "1997-04-03 01:15:32", "89875156824", "Timur Galkin", 1);
+INSERT INTO customers VALUES (5, "Anastasia", "1992-09-15 09:19:29", "89879154822", "Anastasia Skudarina", 1);
 
 INSERT INTO cars VALUES (0, "free", 100, 1, "BMW", "pink", 1, "DE8Y2A", 0);
-
-INSERT INTO cars VALUES (1, "free", 100, 1, "BMW", "red", 1, "AN8Y2A", 0);
-
-INSERT INTO cars VALUES (2, "free", 100, 1, "BMW", "red", 1, "AN1111", 0);
+INSERT INTO cars VALUES (1, "free", 95, 1, "OPEL", "red", 1, "AN8Y2A", 0);
+INSERT INTO cars VALUES (2, "free", 50, 1, "Ford", "green", 1, "AN1111", 0);
 
 INSERT INTO orders VALUES (0, "2017-11-14 12:00:00", "2017-11-14 15:00:00", 0, 0, 0, 1);
 

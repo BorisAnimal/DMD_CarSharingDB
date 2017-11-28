@@ -32,5 +32,5 @@ def get_cars():
 if __name__ == "__main__":
     print("Execute by myself >>")
     # print(get_cars())
-    for i in get_cars():
+    for i in get_customers():
         print(i)
