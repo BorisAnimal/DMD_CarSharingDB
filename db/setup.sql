@@ -123,43 +123,99 @@ CREATE TABLE history_of_travels(
 
 INSERT INTO locations VALUES (0, "Republic of Moldova", "Iargara", "Stefan-Voda", "174/2", "6320", 46.4277,28.4294);
 INSERT INTO locations VALUES (1, "Russia", "Innopolis", "Universitetscaya", "1/4-207", "420500", 55.8304,49.0661);
-INSERT INTO locations VALUES (2, "Russia", "Moscow", "Lenin", "15/6", "105005", 55.7558,37.6173);
+INSERT INTO locations VALUES (2, "Russia", "Kazan", "Baumana", "44", "420030", 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (3, "Russia", "Moscow", "Lenin", "15/6", "105005", 55.7558,37.6173);
+INSERT INTO locations VALUES (4, "Russia", "Innopolis", "Universitetscaya", "1/2-317", "420500", 55.8314,49.0601);
+INSERT INTO locations VALUES (5, "Russia", "Innopolis", "Sportivnaya", "108", "420500", 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (6, "Russia", "Innopolis", "Sportivnaya", "122", "420500", 55.7558,37.6173);
+INSERT INTO locations VALUES (7, "Russia", "Kazan", "Baumana", "44", "420030", 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (8, "Russia", "Kazan", "Baumana", "134", "420031", 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (9, "Russia", "Kazan", "Tatarstan", "23", "420030", 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (10, "Republic of Moldova", "Chisinau", "Bucuresti", "69", "5420", 46.4277,28.4294);
 
 INSERT INTO customers VALUES (0, "John", "1980-10-14 12:15:30", "89178516088", "John Abramovich", 2);
 INSERT INTO customers VALUES (1, "Marina", "1950-05-19 20:50:10", "89175516088", "Marina Abramovich", 2);
 INSERT INTO customers VALUES (2, "Constantin", "1995-06-24 10:55:18", "37369488834", "Constantin Condur", 0);
-INSERT INTO customers VALUES (3, "Robert", "2001-03-03 05:45:23", "37362169587", "Robert Popescu", 0);
+INSERT INTO customers VALUES (3, "Robert", "2001-03-03 05:45:23", "37362169587", "Robert Popescu", 3);
 INSERT INTO customers VALUES (4, "Timur", "1997-04-03 01:15:32", "89875156824", "Timur Galkin", 1);
-INSERT INTO customers VALUES (5, "Anastasia", "1992-09-15 09:19:29", "89879154822", "Anastasia Skudarina", 1);
+INSERT INTO customers VALUES (5, "Anastasia", "1992-09-15 09:19:29", "89879154822", "Anastasia Skudarina", 4);
+INSERT INTO customers VALUES (6, "Alex", "1980-10-14 12:15:30", "89145616088", "Alex Pinchin", 6);
+INSERT INTO customers VALUES (7, "Sabrina", "1987-01-11 20:50:10", "89735516088", "Sabrina Smith", 5);
+INSERT INTO customers VALUES (8, "Pasha", "1997-06-24 11:55:18", "37367648834", "Pasha Curinov", 8);
+INSERT INTO customers VALUES (9, "Natalia", "2006-11-30 22:45:23", "37362163567", "Natalia Zubrina", 7);
+INSERT INTO customers VALUES (10, "Boris", "1992-04-23 07:15:32", "89875156333", "Boris Garin", 9);
+INSERT INTO customers VALUES (11, "Ana", "1982-07-15 15:19:29", "89809158882", "Ana Malikova", 10);
 
-INSERT INTO cars VALUES (0, "free", 100, 1, "BMW", "pink", 1, "DE8Y2A", 0);
-INSERT INTO cars VALUES (1, "free", 95, 1, "OPEL", "red", 1, "AN8Y2A", 0);
-INSERT INTO cars VALUES (2, "free", 50, 1, "Ford", "green", 1, "AN1111", 0);
+INSERT INTO cars VALUES (0, "free", 100, 1, "BMW", "pink", 1, "DE8Y2A", 4);
+INSERT INTO cars VALUES (1, "free", 95, 1, "Opel", "red", 7, "AN8Y2A", 4);
+INSERT INTO cars VALUES (2, "free", 50, 1, "Ford", "green", 6, "AN1111", 4);
+INSERT INTO cars VALUES (3, "free", 75, 1, "Ferrari", "black", 10, "DE1010", 0);
+INSERT INTO cars VALUES (4, "free", 100, 1, "Volvo", "blue", 0, "DE8Y2A", 10);
+INSERT INTO cars VALUES (5, "free", 95, 1, "Mazda", "red", 3, "AN8Y2B", 9);
+INSERT INTO cars VALUES (6, "free", 50, 1, "Lada", "blue", 7, "AN1T01", 9);
+INSERT INTO cars VALUES (7, "free", 75, 1, "Mercedes-Benz", "yellow", 1, "DE30A0", 9);
 
-INSERT INTO orders VALUES (0, "2017-11-14 12:00:00", "2017-11-14 15:00:00", 0, 0, 0, 1);
+INSERT INTO orders VALUES (0, "2017-11-10 07:02:40", "2017-11-13 15:00:00", 0, 2, 4, 2);
+INSERT INTO orders VALUES (1, "2017-11-12 08:52:04", "2017-11-12 20:00:00", 1, 1, 5, 3);
+INSERT INTO orders VALUES (2, "2017-11-14 11:42:02", "2017-11-14 18:00:00", 2, 0, 6, 1);
+INSERT INTO orders VALUES (3, "2017-11-15 14:12:10", "2017-11-16 15:00:00", 3, 3, 7, 4);
+INSERT INTO orders VALUES (4, "2017-11-16 16:47:40", "2017-11-18 16:00:00", 4, 5, 8, 5);
+INSERT INTO orders VALUES (5, "2017-11-17 18:27:07", "2017-12-18 18:00:00", 5, 4, 9, 6);
+INSERT INTO orders VALUES (6, "2017-11-18 19:28:42", "2017-11-18 23:00:00", 3, 7, 4, 7);
+INSERT INTO orders VALUES (7, "2017-11-20 12:50:40", "2017-11-24 12:00:00", 6, 6, 5, 8);
+INSERT INTO orders VALUES (8, "2017-11-21 01:09:53", "2017-12-25 15:00:00", 7, 6, 6, 9);
+INSERT INTO orders VALUES (9, "2017-11-22 09:08:34", "2017-11-22 17:00:00", 8, 7, 10, 2);
+INSERT INTO orders VALUES (10, "2017-11-22 10:25:16", "2017-11-26 15:00:00", 9, 3, 0, 3);
+INSERT INTO orders VALUES (11, "2017-11-22 22:17:06", "2017-12-30 07:00:00", 11, 5, 3, 10);
 
-INSERT INTO orders VALUES (1, "2017-11-14 12:00:00", "2017-11-14 15:00:00", 1, 1, 0, 1);
-
-INSERT INTO orders VALUES (2, "2017-12-14 12:00:00", "2017-12-14 15:00:00", 1, 2, 0, 1);
-
-INSERT INTO payments VALUES (0, 0, 100000000);
-
+INSERT INTO payments VALUES (0, 0, 134);
 INSERT INTO payments VALUES (1, 1, 100);
+INSERT INTO payments VALUES (2, 2, 645);
+INSERT INTO payments VALUES (3, 3, 1000);
+INSERT INTO payments VALUES (4, 4, 124);
+INSERT INTO payments VALUES (5, 5, 524);
+INSERT INTO payments VALUES (6, 6, 22);
+INSERT INTO payments VALUES (7, 7, 7467);
+INSERT INTO payments VALUES (8, 8, 44);
+INSERT INTO payments VALUES (9, 9, 95);
+INSERT INTO payments VALUES (10, 10, 100);
+INSERT INTO payments VALUES (11, 11, 78);
 
-INSERT INTO payments VALUES (2, 2, 100);
+INSERT INTO charging_stations VALUES (0, 5, 10, 8);
+INSERT INTO charging_stations VALUES (1, 7, 20, 7);
+INSERT INTO charging_stations VALUES (2, 6, 18, 5);
 
-INSERT INTO charging_stations VALUES (0, 5, 5, 2);
+INSERT INTO history_of_travels VALUES (0, 0, "2017-11-15 15:00:00");
+INSERT INTO history_of_travels VALUES (1, 5, "2017-11-17 16:00:00");
+INSERT INTO history_of_travels VALUES (2, 6, "2017-11-18 12:00:00");
+INSERT INTO history_of_travels VALUES (3, 7, "2017-11-20 07:00:00");
+INSERT INTO history_of_travels VALUES (4, 3, "2017-11-22 11:00:00");
+INSERT INTO history_of_travels VALUES (5, 7, "2017-12-15 14:00:00");
+INSERT INTO history_of_travels VALUES (6, 1, "2017-12-17 16:00:00");
 
-INSERT INTO history_of_travels VALUES (0, 0, "2017-10-0 00:00:00");
+INSERT INTO car_parks VALUES (0, 6, 5);
+INSERT INTO car_parks VALUES (1, 18, 7);
+INSERT INTO car_parks VALUES (2, 14, 8);
+INSERT INTO car_parks VALUES (3, 11, 10);
 
-INSERT INTO history_of_travels VALUES (1, 0, "2017-10-0 00:00:00");
+INSERT INTO employee VALUES (535405466, "Abragim Matvei", 7000, 89874651289, 4);
+INSERT INTO employee VALUES (535156466, "Eugen Niculin", 2000, 89874651689, 2);
+INSERT INTO employee VALUES (535402663, "Alina Bobrova", 3000, 89874463589, 3);
+INSERT INTO employee VALUES (535888336, "Nadir Ahmantov", 8000, 89874637345, 1);
+INSERT INTO employee VALUES (595827756, "Ecaterina Lubina", 5000, 85948473638, 0);
 
-INSERT INTO history_of_travels VALUES (2, 0, "2017-10-0 00:00:00");
+INSERT INTO feedbacks VALUES (0, "I liked the car", 5, 1, 0);
+INSERT INTO feedbacks VALUES (1, "Good service", 6, 0, 1);
+INSERT INTO feedbacks VALUES (2, "Thank you", 4, 2, 2);
+INSERT INTO feedbacks VALUES (3, "Nice, I will always order your cars", 4, 1, 3);
+INSERT INTO feedbacks VALUES (4, "Very nice programmers", 6, 0, 4);
 
-INSERT INTO history_of_travels VALUES (0, 1, "2017-11-14 15:00:00");
+INSERT INTO posts VALUE (0, "manager", 5000);
+INSERT INTO posts VALUE (1, "director", 8000);
+INSERT INTO posts VALUE (2, "banker", 2000);
+INSERT INTO posts VALUE (3, "operator", 3000);
+INSERT INTO posts VALUE (4, "programmer", 7000);
 
-INSERT INTO history_of_travels VALUES (1, 1, "2017-11-14 15:00:00");
-
-INSERT INTO history_of_travels VALUES (2, 1, "2017-12-14 15:00:00");
-
-INSERT INTO history_of_travels VALUES (2, 2, "2017-12-14 16:00:00");
+INSERT INTO repair_stations VALUE (0, 2, 5, 5);
+INSERT INTO repair_stations VALUE (1, 1, 2, 7);
+INSERT INTO repair_stations VALUE (2, 2, 3, 8);
