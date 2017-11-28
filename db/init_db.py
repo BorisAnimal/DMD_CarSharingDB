@@ -16,7 +16,7 @@ def create_db(connector, db_name):
     print("Database was successfully created")
 
 
-def drop_database(db_name: str):
+def drop_database(db_name):
     """
         removes db_name file from disk
     """
@@ -173,7 +173,7 @@ def __fill_employee(cursor):
     return __get_last_id(cursor)
 
 
-def __fill_customer_activity(cursor, car_ids: list, manager):
+def __fill_customer_activity(cursor, car_ids, manager):
     """
         Fill tables:
             * order

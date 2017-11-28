@@ -65,7 +65,7 @@ def refresh_db():
         print("An error occurred:", e.args[0])
 
 
-def execute(query: str):
+def execute(query):
     """
         execute user defined command
     """
