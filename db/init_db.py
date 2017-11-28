@@ -1,7 +1,7 @@
 import os
 from db import __data_provider as provider
 
-tables_file = "../setup.sql"
+tables_file = "db/setup.sql"
 locations = None
 customers = None
 

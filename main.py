@@ -1,7 +1,7 @@
 import sqlite3
-from db import init_db
+from db import init_db as db
 
-db_name = '../CarSharingDB.db'
+db_name = 'CarSharingDB.db'
 conn = None
 
 
@@ -11,7 +11,7 @@ def create_tables():
     """
     try:
         __check_connector()
-        init_db.create_tables(connector=conn)
+        db.create_tables(connector=conn)
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
 
@@ -22,7 +22,7 @@ def drop_database():
     """
     try:
         cr_connector = sqlite3.connect(db_name)
-        init_db.drop_database(db_name=db_name)
+        db.drop_database(db_name=db_name)
         cr_connector.close()
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
@@ -59,7 +59,7 @@ def refresh_db():
         drop_database()
         __check_connector()
         create_tables()
-        init_db.fill_all(conn.cursor())
+        db.fill_all(conn.cursor())
         conn.commit()
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         # create connection
         __check_connector()
         # check tables existence
-        if not init_db.check_tables_existance(conn.cursor()):
+        if not db.check_tables_existance(conn.cursor()):
             create_tables()
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
