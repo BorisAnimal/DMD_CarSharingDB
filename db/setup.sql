@@ -86,7 +86,7 @@ CREATE TABLE feedbacks(
 	managed_by INTEGER,
 	leaved_by INTEGER,
 	PRIMARY KEY (feedback_id),
-	FOREIGN KEY (managed_by) REFERENCES employess(SSN) ON DELETE SET NULL,
+	FOREIGN KEY (managed_by) REFERENCES employee(SSN) ON DELETE SET NULL,
 	FOREIGN KEY (leaved_by) REFERENCES customers(customer_id) ON DELETE SET NULL
 );
 
