@@ -33,18 +33,18 @@ def create_tables(connector):
         also some additional insert commands needed for tasks from assignment
     """
     cursor = connector.cursor()
-    for i in __get_tables():
+    for i in __get_querries():
         cursor.execute(i)
     print("All tables was successfully created")
 
 
-def __get_tables():
+def __get_querries():
     """
         :return: list of commands from setup.sql file
     """
     r = []
     with open(tables_file) as f:
-        r = f.read().split("\n\n")
+        r = f.read().split(";")
     return r
 
 
@@ -60,10 +60,11 @@ def check_tables_existance(cursor):
     return False
 
 
-def fill_all(cursor):
+def fill_all_tables(cursor):
     """
         fill all tables with trash values
     """
+    print("Here we go >>")
     __fill_charging_stations(cursor)
     __fill_repair_stations(cursor)
     cars = __fill_cars(cursor)

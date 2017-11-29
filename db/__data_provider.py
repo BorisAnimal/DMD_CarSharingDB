@@ -27,10 +27,3 @@ def get_cars():
     col = ["red", "green", "Brown"]
     pl = ["e777kx", "h123bm"]
     return list(itertools.product(st, cl, tf, ml, col, pl))
-
-
-if __name__ == "__main__":
-    print("Execute by myself >>")
-    # print(get_cars())
-    for i in get_customers():
-        print(i)
