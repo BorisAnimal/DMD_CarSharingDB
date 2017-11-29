@@ -1,13 +1,18 @@
 CREATE TABLE locations(
 	location_id INTEGER,
+	gpsX REAL,
+	gpsY REAL,
+	PRIMARY KEY (location_id)
+);
+
+CREATE TABLE addresses(
+	descripts INTEGER,
 	state TINYTEXT,
 	city TINYTEXT,
 	street TINYTEXT,
 	house TINYTEXT,
 	zip_code TEXT,
-	gpsX REAL,
-	gpsY REAL,
-	PRIMARY KEY (location_id)
+	FOREIGN KEY (descripts) REFERENCES locations(location_id) ON DELETE CASCADE
 );
 
 CREATE TABLE customers(
@@ -15,7 +20,7 @@ CREATE TABLE customers(
 	name TINYTEXT,
 	date_of_birth TINYTEXT,
 	phone_number TINYTEXT,
-	full_name TINYTEXT,
+	last_name TINYTEXT,
 	lives_in INTEGER,
 	PRIMARY KEY (customer_id),
 	FOREIGN KEY (lives_in) REFERENCES locations(location_id) ON DELETE SET NULL
@@ -23,7 +28,8 @@ CREATE TABLE customers(
 
 CREATE TABLE employee(
 	SSN INTEGER,
-	full_name TINYTEXT,
+ 	last_name TINYTEXT,
+	name TINYTEXT,
 	salary INTEGER,
 	phone_number TINYTEXT,
 	post_id INTEGER,
@@ -121,30 +127,42 @@ CREATE TABLE history_of_travels(
 	FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
 
-INSERT INTO locations VALUES (0, "Republic of Moldova", "Iargara", "Stefan-Voda", "174/2", "6320", 46.4277,28.4294);
-INSERT INTO locations VALUES (1, "Russia", "Innopolis", "Universitetscaya", "1/4-207", "420500", 55.8304,49.0661);
-INSERT INTO locations VALUES (2, "Russia", "Kazan", "Baumana", "44", "420030", 55.785663524, 49.119666188);
-INSERT INTO locations VALUES (3, "Russia", "Moscow", "Lenin", "15/6", "105005", 55.7558,37.6173);
-INSERT INTO locations VALUES (4, "Russia", "Innopolis", "Universitetscaya", "1/2-317", "420500", 55.8314,49.0601);
-INSERT INTO locations VALUES (5, "Russia", "Innopolis", "Sportivnaya", "108", "420500", 55.785663524, 49.119666188);
-INSERT INTO locations VALUES (6, "Russia", "Innopolis", "Sportivnaya", "122", "420500", 55.7558,37.6173);
-INSERT INTO locations VALUES (7, "Russia", "Kazan", "Baumana", "44", "420030", 55.785663524, 49.119666188);
-INSERT INTO locations VALUES (8, "Russia", "Kazan", "Baumana", "134", "420031", 55.785663524, 49.119666188);
-INSERT INTO locations VALUES (9, "Russia", "Kazan", "Tatarstan", "23", "420030", 55.785663524, 49.119666188);
-INSERT INTO locations VALUES (10, "Republic of Moldova", "Chisinau", "Bucuresti", "69", "5420", 46.4277,28.4294);
+INSERT INTO locations VALUES (0, 46.4277, 28.4294);
+INSERT INTO locations VALUES (1, 55.8304, 49.0661);
+INSERT INTO locations VALUES (2, 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (3, 55.7558, 37.6173);
+INSERT INTO locations VALUES (4, 55.8314, 49.0601);
+INSERT INTO locations VALUES (5, 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (6, 55.7558, 37.6173);
+INSERT INTO locations VALUES (7, 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (8, 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (9, 55.785663524, 49.119666188);
+INSERT INTO locations VALUES (10, 46.4277, 28.4294);
 
-INSERT INTO customers VALUES (0, "John", "1980-10-14 12:15:30", "89178516088", "John Abramovich", 2);
-INSERT INTO customers VALUES (1, "Marina", "1950-05-19 20:50:10", "89175516088", "Marina Abramovich", 2);
-INSERT INTO customers VALUES (2, "Constantin", "1995-06-24 10:55:18", "37369488834", "Constantin Condur", 0);
-INSERT INTO customers VALUES (3, "Robert", "2001-03-03 05:45:23", "37362169587", "Robert Popescu", 3);
-INSERT INTO customers VALUES (4, "Timur", "1997-04-03 01:15:32", "89875156824", "Timur Galkin", 1);
-INSERT INTO customers VALUES (5, "Anastasia", "1992-09-15 09:19:29", "89879154822", "Anastasia Skudarina", 4);
-INSERT INTO customers VALUES (6, "Alex", "1980-10-14 12:15:30", "89145616088", "Alex Pinchin", 6);
-INSERT INTO customers VALUES (7, "Sabrina", "1987-01-11 20:50:10", "89735516088", "Sabrina Smith", 5);
-INSERT INTO customers VALUES (8, "Pasha", "1997-06-24 11:55:18", "37367648834", "Pasha Curinov", 8);
-INSERT INTO customers VALUES (9, "Natalia", "2006-11-30 22:45:23", "37362163567", "Natalia Zubrina", 7);
-INSERT INTO customers VALUES (10, "Boris", "1992-04-23 07:15:32", "89875156333", "Boris Garin", 9);
-INSERT INTO customers VALUES (11, "Ana", "1982-07-15 15:19:29", "89809158882", "Ana Malikova", 10);
+INSERT INTO addresses VALUES (0, "Republic of Moldova", "Iargara", "Stefan-Voda", "174/2", "6320");
+INSERT INTO addresses VALUES (1, "Russia", "Innopolis", "Universitetscaya", "1/4-207", "420500");
+INSERT INTO addresses VALUES (2, "Russia", "Kazan", "Baumana", "44", "420030");
+INSERT INTO addresses VALUES (3, "Russia", "Moscow", "Lenin", "15/6", "105005");
+INSERT INTO addresses VALUES (4, "Russia", "Innopolis", "Universitetscaya", "1/2-317", "420500");
+INSERT INTO addresses VALUES (5, "Russia", "Innopolis", "Sportivnaya", "108", "420500");
+INSERT INTO addresses VALUES (6, "Russia", "Innopolis", "Sportivnaya", "122", "420500");
+INSERT INTO addresses VALUES (7, "Russia", "Kazan", "Baumana", "44", "420030");
+INSERT INTO addresses VALUES (8, "Russia", "Kazan", "Baumana", "134", "420031");
+INSERT INTO addresses VALUES (9, "Russia", "Kazan", "Tatarstan", "23", "420030");
+INSERT INTO addresses VALUES (10, "Republic of Moldova", "Chisinau", "Bucuresti", "69", "5420");
+
+INSERT INTO customers VALUES (0, "John", "1980-10-14 12:15:30", "89178516088", "Abramovich", 2);
+INSERT INTO customers VALUES (1, "Marina", "1950-05-19 20:50:10", "89175516088", "Abramovich", 2);
+INSERT INTO customers VALUES (2, "Constantin", "1995-06-24 10:55:18", "37369488834", "Condur", 0);
+INSERT INTO customers VALUES (3, "Robert", "2001-03-03 05:45:23", "37362169587", "Popescu", 3);
+INSERT INTO customers VALUES (4, "Timur", "1997-04-03 01:15:32", "89875156824", "Galkin", 1);
+INSERT INTO customers VALUES (5, "Anastasia", "1992-09-15 09:19:29", "89879154822", "Skudarina", 4);
+INSERT INTO customers VALUES (6, "Alex", "1980-10-14 12:15:30", "89145616088", "Pinchin", 6);
+INSERT INTO customers VALUES (7, "Sabrina", "1987-01-11 20:50:10", "89735516088", "Smith", 5);
+INSERT INTO customers VALUES (8, "Pasha", "1997-06-24 11:55:18", "37367648834", "Curinov", 8);
+INSERT INTO customers VALUES (9, "Natalia", "2006-11-30 22:45:23", "37362163567", "Zubrina", 7);
+INSERT INTO customers VALUES (10, "Boris", "1992-04-23 07:15:32", "89875156333", "Garin", 9);
+INSERT INTO customers VALUES (11, "Ana", "1982-07-15 15:19:29", "89809158882", "Malikova", 10);
 
 INSERT INTO cars VALUES (0, "free", 100, 1, "BMW", "pink", 1, "DE8Y2A", 4);
 INSERT INTO cars VALUES (1, "free", 95, 1, "Opel", "red", 7, "AN8Y2A", 4);
@@ -198,11 +216,11 @@ INSERT INTO car_parks VALUES (1, 18, 7);
 INSERT INTO car_parks VALUES (2, 14, 8);
 INSERT INTO car_parks VALUES (3, 11, 10);
 
-INSERT INTO employee VALUES (535405466, "Abragim Matvei", 7000, 89874651289, 4);
-INSERT INTO employee VALUES (535156466, "Eugen Niculin", 2000, 89874651689, 2);
-INSERT INTO employee VALUES (535402663, "Alina Bobrova", 3000, 89874463589, 3);
-INSERT INTO employee VALUES (535888336, "Nadir Ahmantov", 8000, 89874637345, 1);
-INSERT INTO employee VALUES (595827756, "Ecaterina Lubina", 5000, 85948473638, 0);
+INSERT INTO employee VALUES (535405466, "Abragim", "Matvei", 7000, 89874651289, 4);
+INSERT INTO employee VALUES (535156466, "Eugen", "Niculin", 2000, 89874651689, 2);
+INSERT INTO employee VALUES (535402663, "Alina", "Bobrova", 3000, 89874463589, 3);
+INSERT INTO employee VALUES (535888336, "Nadir", "Ahmantov", 8000, 89874637345, 1);
+INSERT INTO employee VALUES (595827756, "Ecaterina", "Lubina", 5000, 85948473638, 0);
 
 INSERT INTO feedbacks VALUES (0, "I liked the car", 5, 1, 0);
 INSERT INTO feedbacks VALUES (1, "Good service", 6, 0, 1);
