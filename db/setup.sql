@@ -253,12 +253,12 @@ INSERT INTO feedbacks VALUES (2, "Thank you", 4, 2, 2);
 INSERT INTO feedbacks VALUES (3, "Nice, I will always order your cars", 4, 1, 3);
 INSERT INTO feedbacks VALUES (4, "Very nice programmers", 6, 0, 4);
 
-INSERT INTO posts VALUE (0, "manager", 5000);
-INSERT INTO posts VALUE (1, "director", 8000);
-INSERT INTO posts VALUE (2, "banker", 2000);
-INSERT INTO posts VALUE (3, "operator", 3000);
-INSERT INTO posts VALUE (4, "programmer", 7000);
+INSERT INTO posts VALUES (0, "manager", 5000);
+INSERT INTO posts VALUES (1, "director", 8000);
+INSERT INTO posts VALUES (2, "banker", 2000);
+INSERT INTO posts VALUES (3, "operator", 3000);
+INSERT INTO posts VALUES (4, "programmer", 7000);
 
-INSERT INTO repair_stations VALUE (0, 2, 5, 5);
-INSERT INTO repair_stations VALUE (1, 1, 2, 7);
-INSERT INTO repair_stations VALUE (2, 2, 3, 8);
+INSERT INTO repair_stations VALUES (0, 2, 5, 5);
+INSERT INTO repair_stations VALUES (1, 1, 2, 7);
+INSERT INTO repair_stations VALUES (2, 2, 3, 8);
