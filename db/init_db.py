@@ -8,7 +8,7 @@ customers = None
 
 def create_db(connector, db_name):
     """
-        :return: creates empty database
+        :return: creates empty databasez
     """
     cursor = connector.cursor()
     cursor.execute("CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(db_name))
@@ -208,3 +208,6 @@ def __get_last_id(cursor):
     cursor.execute("select LAST_INSERT_ROWID()")
     for i in cursor:
         return i[0]
+
+if __name__ == "__main__":
+    tables_file = "setup.sql"
