@@ -7,27 +7,33 @@ db_name = 'CarSharingDB.db'
 conn = None
 
 
-def exercise(number):
-    exercises = [
+def execute_select(number):
+    """
+        Executes exercise from prepared list by its number from assignment list
+
+    :param number: number of execute selection
+    """
+    selections = [
         ex.ex_1,
         ex.ex_2,
         ex.ex_3,
         ex.ex_4,
         ex.ex_5,
         ex.ex_6,
-        # ex.ex_7,
-        # ex.ex_8,
+        ex.ex_7,
+        ex.ex_8,
     ]
+    __check_connector()
     print("\nQuery #{} requested. Execution result:".format(number))
     if (number < 1 or number > 8):
-        print("""Tricky input detected. There is no such exercise ({}) in our assignment :3 \nTry range [1..{}]"""
-              .format(number,len(exercises)))
+        print("""Tricky input detected. There is no such select ({}) in our assignment :3 \nTry range [1..{}]"""
+              .format(number, len(selections)))
     else:
         try:
-            if (number > len(exercises)):
-                print("We do not this exercise :3 \nTry range [1..{}]".format(len(exercises)))
+            if (number > len(selections)):
+                print("We not implemented this selection :3 \nTry range [1..{}]".format(len(selections)))
             else:
-                print(exercises[number - 1](conn.cursor()))
+                print(selections[number - 1](conn.cursor()))
         except sqlite3.Error as e:
             print("An error occurred:", e.args[0])
 
@@ -38,7 +44,7 @@ def create_tables():
     """
     try:
         __check_connector()
-        db.create_tables(connector=conn)
+        db.create_tables_with_data(connector=conn)
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
 
@@ -68,7 +74,7 @@ def close():
 
 def __check_connector():
     """
-        initiate connection if it None
+        initiate connection if it is None
     """
     global conn
     if (conn == None):
@@ -78,15 +84,7 @@ def __check_connector():
             print("An error occurred:", e.args[0])
 
 
-def fill_tables_with_random_data():
-    try:
-        __check_connector()
-        db.fill_all_tables(conn.cursor())
-    except sqlite3.Error as e:
-        print("An error occurred:", e.args[0])
-
-
-def execute(query):
+def custom_query(query):
     """
         execute user defined command
     """
@@ -115,24 +113,38 @@ def refresh_db():
         print("An error occurred:", e.args[0])
 
 
-if __name__ == "__main__":
+def base_test():
     try:
-        refresh_db()  # TODO: remove this command
+        refresh_db()
         # create connection
         __check_connector()
         # check tables existence
         if not db.check_tables_existance(conn.cursor()):
             create_tables()
+            conn.commit()
 
-        exercise(0)
-        exercise(1)
-        exercise(2)
-        exercise(3)
-        exercise(4)
-        exercise(5)
-        exercise(6)
-        exercise(7)
-        exercise(8)
-        exercise(9)
+        print("\nUser defined input execution test>>")
+        custom_query("SELECT * FROM customers LIMIT 5")
+
+        execute_select(0)
+        execute_select(1)
+        execute_select(2)
+        execute_select(3)
+        execute_select(4)
+        execute_select(5)
+        execute_select(6)
+        execute_select(7)
+        execute_select(8)
+        execute_select(9)
+
+        close()
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
+
+
+if __name__ == "__main__":
+    __check_connector()
+    # check tables existence
+    if not db.check_tables_existance(conn.cursor()):
+        create_tables()
+        conn.commit()

@@ -1,4 +1,5 @@
 import sqlite3
+import math
 
 
 def ex_1(cursor):
@@ -37,7 +38,7 @@ def ex_2(cursor):
     :param cursor:
     :return: String with amount of visits to charging stations for each hour at 2017-12-14
     """
-    date = "2017-12-14 00:00:00"
+    date = "2017-11-12 00:00:00"
     result = ""
     for i in range(0, 23, 1):
         h1 = str(i) + " hours"
@@ -61,7 +62,8 @@ def ex_3(cursor):
     :return: string that conatins how many % of cars are busy at morning, afternoon, evening
     """
     start_date = "2017-11-14 00:00:00"
-    result = "Morning, Afternoon, Evening \n"
+    result = ""
+    percentage = []
     cursor.execute("""SELECT COUNT(*) FROM cars;""")
     cars_number = cursor.fetchone()[0]
     for j in range(7, 18, 5):  # iterate through days periods
@@ -78,7 +80,13 @@ def ex_3(cursor):
             # count all cars that was busy all needed time range
             # that means: start_of_order <= start_range <= end_range <= end_of_order
             counter += cursor.fetchone()[0]
-        result += str(counter / cars_number / 7 * 100) + " "
+        if (cars_number > 0):
+            percentage.append(str(counter / cars_number / 7 * 100) + " ")
+        else:
+            percentage.append("0 ")
+    result += "Morning percentage: " + percentage[0] + "\n"
+    result += "Afternoon percentage: " + percentage[1] + "\n"
+    result += "Evening percentage: " + percentage[2] + "\n"
     return result
 
 
@@ -94,7 +102,12 @@ def ex_4(cursor):
     """
     name_of_lazy_customer = "John"
     cursor.execute("""SELECT customer_id FROM customers WHERE customers.name=?;""", (name_of_lazy_customer,))
-    id = cursor.fetchone()[0]
+    tmp = cursor.fetchone()
+    id = -1
+    if (tmp != None):
+        id = tmp[0]
+    else:
+        return "There is no John in database"
     cursor.execute("""SELECT COUNT(*) FROM
                         (
                           ((SELECT paid_amount, paid_for_order FROM payments)
@@ -105,14 +118,13 @@ def ex_4(cursor):
                             JOIN
                           (SELECT car_id, tarif FROM cars)
                             ON car_id = included_car
-                        ) WHERE paid_amount>tarif*order_time;
+                        ) WHERE paid_amount>=tarif*order_time*2;
                     """, (id,))
     result = "John paid more than nedeed " + str(cursor.fetchone()[0]) + " times in last month\n"
     return result
 
 
-def ex_5(cursor, date = "2017-11-14 00:00:00"):
-    d_date = "2017-11-14 00:00:00"
+def ex_5(cursor, date="2017-11-14 00:00:00"):
     cursor.execute("""
         SELECT (x_c-x_2) AS x, (y_c-y_2) AS y FROM (
           (SELECT included_car, gpsX AS x_c, gpsY AS y_c, location_id, start_time AS time_c, order_id FROM
@@ -141,7 +153,10 @@ def ex_5(cursor, date = "2017-11-14 00:00:00"):
     for row in cursor.fetchall():
         sum_of_distances += (row[0] * row[0] + row[1] * row[1]) ** 0.5
         count += 1
-    result += str(sum_of_distances / count)
+    if (count > 0):
+        result += str(sum_of_distances / count)
+    else:
+        return "Database has no necessary information. Please manage it."
     cursor.execute(
         """SELECT datetime(AVG(julianday(end_time) - julianday(start_time))) AS time FROM orders WHERE orders.start_time >= ?""",
         (date,))
@@ -155,7 +170,7 @@ def ex_6(cursor):
     time = [(7, 10), (12, 14), (17, 19)]
     result = ""
     for (i, j) in time:
-        cursor.execute("""SELECT locations.state || ', ' || locations.city || ', ' || locations.street || ', ' || locations.house AS name_s  FROM (
+        cursor.execute("""SELECT state || ', ' || city || ', ' || street || ', ' || house AS name_s  FROM (
                         SELECT orders.start_location loc_id
                         FROM orders
                         WHERE CAST(COALESCE(strftime("%H", orders.start_time), 0) AS INTEGER) >= ?
@@ -164,13 +179,15 @@ def ex_6(cursor):
                         ORDER BY COUNT(*) DESC
                         LIMIT 3
                     ) AS S1
-                    JOIN locations ON locations.location_id = S1.loc_id
+                    JOIN locations, addresses 
+                    ON locations.location_id = S1.loc_id 
+                    AND addresses.descripts = locations.location_id
             """, (i, j))
         result += "from " + str(i) + "h to " + str(j) + "h:\n"
-        result += "top start locations: \n"
+        result += "   top start locations: \n"
         for row in cursor.fetchall():
-            result += str(row[0]) + '\n'
-        cursor.execute("""SELECT locations.state || ', ' || locations.city || ', ' || locations.street || ', ' || locations.house AS name_d  FROM(
+            result += "     " + str(row[0]) + '\n'
+        cursor.execute("""SELECT state || ', ' || city || ', ' || street || ', ' || house AS name_d  FROM(
                         SELECT orders.destination
                         FROM orders
                         WHERE CAST(COALESCE(strftime("%H", orders.end_time), 0) AS INTEGER) >= ?
@@ -179,9 +196,66 @@ def ex_6(cursor):
                         ORDER BY  COUNT(*) DESC
                         LIMIT 3
                     ) AS S2
-                    JOIN locations ON locations.location_id = S2.destination
+                    JOIN locations, addresses 
+                    ON locations.location_id = S2.destination 
+                    AND locations.location_id = addresses.descripts
                     """, (i, j))
-        result += "top destinations: \n"
+        result += "   top destinations: \n"
         for row in cursor.fetchall():
-            result += str(row[0]) + '\n'
+            result += "     " + str(row[0]) + '\n'
     return result
+
+
+def ex_7(cursor):
+    """
+    We found how many cars is 10% of cars
+    And then using GROUP BY, ORDER BY and LIMIT, we found id(s) of needed cars
+    :param cursor:
+    :return:
+    """
+    cursor.execute("""SELECT COUNT(*) FROM cars""")
+    number = math.ceil(cursor.fetchone()[0] * 0.1)
+
+    cursor.execute("""SELECT included_car AS carID FROM orders
+                      WHERE start_time >= datetime('now', '-3 months')
+                      GROUP BY included_car
+                      ORDER BY COUNT(*) ASC
+                      LIMIT ?;""", (number,))
+    result = "Car id(s) which should be deleted:\n"
+    for row in cursor.fetchall():
+        result += str(row[0]) + '\n'
+    return result
+
+
+def ex_8(cursor):
+    """
+
+    :param cursor:
+    :return:
+    """
+    month = 12
+    year = 2017
+    cursor.execute("""SELECT orders.made_by AS UserID, COUNT(num) AS Amount
+                    FROM orders
+                    JOIN (
+                        SELECT h.car_id, COUNT(h.location_id) AS num
+                        FROM history_of_travels h
+                        JOIN charging_stations c ON h.location_id = c.location
+                        WHERE CAST(COALESCE(strftime("%M", h.time), 0) AS INTEGER) = ? AND CAST(COALESCE(strftime("%Y", h.time), 0) AS INTEGER) = ?
+                        GROUP BY h.car_id
+                        ) AS Loc ON orders.included_car = Loc.car_id
+                    GROUP BY made_by""", (month, year))
+    result = ""
+    for row in cursor.fetchall():
+        result += "userID: " + str(row[0]) + " Amount: " + str(row[1]) + '\n'
+    return result
+
+
+if __name__ == "__main__":
+    # C:\Users\mvideo\PycharmProjects\dmd3part\database.sqlite
+
+    connection = sqlite3.connect('database.sqlite')
+    cursor = connection.cursor()
+    response = ""
+    print(ex_6(cursor))
+    connection.close()
