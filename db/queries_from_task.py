@@ -125,6 +125,14 @@ def ex_4(cursor):
 
 
 def ex_5(cursor, date="2017-11-14 00:00:00"):
+    """
+    We found start location of order, then we found previous using SORT BY and LIMIT.
+    Then we select distances between this points (x and y) to calculate Euclid's distance
+    I calculate distance using python, because SQLITE doesn't have function to calculate square root
+    :param cursor:
+    :param date:
+    :return:
+    """
     cursor.execute("""
         SELECT (x_c-x_2) AS x, (y_c-y_2) AS y FROM (
           (SELECT included_car, gpsX AS x_c, gpsY AS y_c, location_id, start_time AS time_c, order_id FROM
@@ -167,6 +175,11 @@ def ex_5(cursor, date="2017-11-14 00:00:00"):
 
 
 def ex_6(cursor):
+    """
+    We found top 3 start locations and then op 3 destinations by  using GROUP BY, SORT BY and LIMIT
+    :param cursor:
+    :return:
+    """
     time = [(7, 10), (12, 14), (17, 19)]
     result = ""
     for (i, j) in time:
