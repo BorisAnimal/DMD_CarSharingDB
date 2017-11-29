@@ -259,6 +259,6 @@ INSERT INTO posts VALUE (2, "banker", 2000);
 INSERT INTO posts VALUE (3, "operator", 3000);
 INSERT INTO posts VALUE (4, "programmer", 7000);
 
-INSERT INTO repair_stations VALUE (0, 2, 5, 5);
-INSERT INTO repair_stations VALUE (1, 1, 2, 7);
-INSERT INTO repair_stations VALUE (2, 2, 3, 8);
+INSERT INTO repair_stations VALUES (0, 2, 5, 5);
+INSERT INTO repair_stations VALUES (1, 1, 2, 7);
+INSERT INTO repair_stations VALUES (2, 2, 3, 8);
