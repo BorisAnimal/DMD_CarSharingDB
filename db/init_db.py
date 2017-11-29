@@ -183,9 +183,7 @@ def __fill_customer_activity(cursor, car_ids, manager):
         with trash data of one exemplar
     """
     # ORDER
-    begin = "2017-11-24 00:00:00"
     end = "2017-11-24 00:10:00"
-    cust = __generate_new_customer(cursor)
     car_id = car_ids.pop()
     cust = __generate_new_customer(cursor)
     start = __generate_new_location(cursor)
