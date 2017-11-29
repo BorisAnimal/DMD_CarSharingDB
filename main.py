@@ -38,7 +38,7 @@ def execute_select(number):
             print("An error occurred:", e.args[0])
 
 
-def create_tables():
+def create_tables_with_data():
     """
         creates schema of all tables with empty rows
     """
@@ -107,7 +107,7 @@ def refresh_db():
         close()
         drop_database()
         __check_connector()
-        create_tables()
+        create_tables_with_data()
         conn.commit()
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
@@ -120,7 +120,7 @@ def base_test():
         __check_connector()
         # check tables existence
         if not db.check_tables_existance(conn.cursor()):
-            create_tables()
+            create_tables_with_data()
             conn.commit()
 
         print("\nUser defined input execution test>>")
@@ -146,5 +146,5 @@ if __name__ == "__main__":
     __check_connector()
     # check tables existence
     if not db.check_tables_existance(conn.cursor()):
-        create_tables()
+        create_tables_with_data()
         conn.commit()
