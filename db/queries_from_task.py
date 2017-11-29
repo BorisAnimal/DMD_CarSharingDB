@@ -242,7 +242,8 @@ def ex_7(cursor):
 
 def ex_8(cursor):
     """
-
+    We count how many charge stations have visited cars which were used by each customer during one month (_/12/2017)
+    by joining tables history_of_travels and charging_stations
     :param cursor:
     :return:
     """
