@@ -12,6 +12,7 @@ CREATE TABLE addresses (
   street    TINYTEXT,
   house     TINYTEXT,
   zip_code  TEXT,
+  PRIMARY KEY (descripts),
   FOREIGN KEY (descripts) REFERENCES locations (location_id)
     ON DELETE CASCADE
 );

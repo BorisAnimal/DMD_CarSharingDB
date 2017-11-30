@@ -51,9 +51,8 @@ def check_tables_existance(cursor):
         checks user tables existence by checking tables number
         :return: true if more than one user table else otherwise
     """
-    tbls = cursor.execute("""SELECT * FROM sqlite_master""")
-    # WARNING!!! do not execute fetchall() twice!!!
-    if len(tbls.fetchall()) > 2:
+    tbls = cursor.execute("""SELECT count(*) FROM sqlite_master""")
+    if tbls.fetchall()[0][0] > 2:
         return True
     return False
 
