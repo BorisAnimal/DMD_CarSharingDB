@@ -225,9 +225,8 @@ def __get_last_id(cursor):
         :return: id of last added (sequentially, not use in multithreading) row in something table
         (not matter which table)
     """
-    cursor.execute("select LAST_INSERT_ROWID()")
-    for i in cursor:
-        return i[0]
+    tbls = cursor.execute("select LAST_INSERT_ROWID()")
+    return tbls.fetchall()[0][0]
 
 
 if __name__ == "__main__":

@@ -137,6 +137,8 @@ def base_test():
         execute_select(8)
         execute_select(9)
 
+        db.fill_all_tables(conn.cursor())
+
         close()
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
@@ -148,3 +150,4 @@ if __name__ == "__main__":
     if not db.check_tables_existance(conn.cursor()):
         create_tables_with_data()
         conn.commit()
+    base_test()
